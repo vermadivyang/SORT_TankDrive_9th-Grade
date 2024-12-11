@@ -1,4 +1,7 @@
 package org.firstinspires.ftc.teamcode;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +17,7 @@ public class TeleOpTester1 extends OpMode {
     boolean a_state = false;  
   
     public double MAXSPEED = .75;
-    TankDrive drive = new TankDrive();
+    TankDrive drive = new TankDrive(hardwareMap, new Pose2d(0,0,0));
 
     public void init(){
       telemetry.addLine("init complete");

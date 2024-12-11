@@ -8,6 +8,10 @@ public class TeleOpTester extends OpMode {
     double forward=0;
     double strafe=0;
     double rotate=0;
+
+    boolean a_prev = false;
+    boolean a_state = false;
+
     public double MAXSPEED = .75;
     TeleOpTank d = new TeleOpTank();
 
@@ -25,7 +29,7 @@ public class TeleOpTester extends OpMode {
         rotate = -gamepad1.right_stick_x*MAXSPEED;
         strafe = gamepad1.left_trigger*MAXSPEED-gamepad1.right_trigger*MAXSPEED;
 
-        d.driveTank(forward,rotate,strafe);
+        d.driveTank(forward,rotate);
 
 
         //Turtle Mode

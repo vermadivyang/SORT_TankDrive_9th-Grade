@@ -1,5 +1,4 @@
-
-        package org.firstinspires.ftc.teamcode.ConfigRR;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
