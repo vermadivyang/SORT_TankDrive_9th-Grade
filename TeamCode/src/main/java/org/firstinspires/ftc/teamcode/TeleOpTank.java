@@ -30,7 +30,7 @@ public class TeleOpTank {
 
 
 
-    public TeleOpMecanum() {
+    public TeleOpTank() {
         float[] data = {1.0f, 1.0f, 1.0f,
                 1.0f, -1.0f, -1.0f,
                 1.0f, -1.0f, 1.0f};
@@ -72,7 +72,7 @@ public class TeleOpTank {
 
     }
 
-    public void driveMecanum(double forward, double rotate) {
+    public void driveTank(double forward, double rotate) {
         double LeftSpeed = forward + rotate;
         double RightSpeed = forward - rotate;
 
