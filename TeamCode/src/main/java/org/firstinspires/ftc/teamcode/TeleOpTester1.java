@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="TeleOp | Tank")
-public class teleopMaize_Red extends OpMode {
+public class TeleOpTester1 extends OpMode {
   
     double forward=0;
     double strafe=0;
