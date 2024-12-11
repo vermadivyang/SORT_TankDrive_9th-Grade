@@ -7,11 +7,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.matrices.GeneralMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 
-public class    TeleOpMecanum {
-     DcMotor motor0;
-     DcMotor motor1;
-     DcMotor motor2;
-     DcMotor motor3;
+public class TeleOpTank {
+     DcMotor motorL;
+     DcMotor motorR;
+
 
     public static double GEAR_RATIO = 1.0; // for simulator - ours should be 0.5f;
 
@@ -26,10 +25,9 @@ public class    TeleOpMecanum {
     private MatrixF conversion;
     private GeneralMatrixF encoderMatrix = new GeneralMatrixF(3, 1);
 
-    private int frontLeftOffset;
-    private int frontRightOffset;
-    private int backRightOffset;
-    private int backLeftOffset;
+    private int LeftOffset;
+    private int RightOffset;
+
 
 
     public TeleOpMecanum() {
@@ -43,60 +41,51 @@ public class    TeleOpMecanum {
 
 
     public void init(HardwareMap hwMap) {
-        motor0 = hwMap.get(DcMotor.class, "leftFront");
+        motorL = hwMap.get(DcMotor.class, "left");
        // motor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor1 = hwMap.get(DcMotor.class, "rightFront");
+        motorR = hwMap.get(DcMotor.class, "right");
     //    motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2 = hwMap.get(DcMotor.class, "leftBack");
-    //    motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor3 = hwMap.get(DcMotor.class, "rightBack");
-   //     motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 //DcMotor.ZeroPowerBehavior.FLOAT
 
 
         //Updated by gcf to test motor direction issues.
-        motor0.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor2.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor3.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorL.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        motor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
     }
 
-    private void setSpeeds(double flSpeed, double frSpeed, double blSpeed, double brSpeed) {
+    private void setSpeeds(double LSpeed, double RSpeed) {
         double largest = maxSpeed;
-        largest = Math.max(largest, Math.abs(flSpeed));
-        largest = Math.max(largest, Math.abs(frSpeed));
-        largest = Math.max(largest, Math.abs(blSpeed));
-        largest = Math.max(largest, Math.abs(brSpeed));
+        largest = Math.max(largest, Math.abs(LSpeed));
+        largest = Math.max(largest, Math.abs(RSpeed));
 
-        motor0.setPower(flSpeed / largest);
-        motor1.setPower(frSpeed / largest);
-        motor2.setPower(blSpeed / largest);
-        motor3.setPower(brSpeed / largest);
+
+        motorL.setPower(LSpeed / largest);
+        motorR.setPower(RSpeed / largest);
+
     }
 
-    public void driveMecanum(double forward, double strafe, double rotate) {
-        double frontLeftSpeed = forward + strafe + rotate;
-        double frontRightSpeed = forward - strafe - rotate;
-        double backLeftSpeed = forward - strafe + rotate;
-        double backRightSpeed = forward + strafe - rotate;
+    public void driveMecanum(double forward, double rotate) {
+        double LeftSpeed = forward + rotate;
+        double RightSpeed = forward - rotate;
 
-        setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
+        setSpeeds(LeftSpeed, RightSpeed);
     }
 
     // Returns forward, strafe
     double[] getDistanceCm() {
         double[] distances = {0.0, 0.0};
 
-        encoderMatrix.put(0, 0, (float) ((motor0.getCurrentPosition() - frontLeftOffset) * CM_PER_TICK));
-        encoderMatrix.put(1, 0, (float) ((motor1.getCurrentPosition() - frontRightOffset) * CM_PER_TICK));
-        encoderMatrix.put(2, 0, (float) ((motor2.getCurrentPosition() - backLeftOffset) * CM_PER_TICK));
+        encoderMatrix.put(0, 0, (float) ((motorL.getCurrentPosition() - LeftOffset) * CM_PER_TICK));
+        encoderMatrix.put(1, 0, (float) ((motorR.getCurrentPosition() - RightOffset) * CM_PER_TICK));
+        //encoderMatrix.put(2, 0, (float) ((motor2.getCurrentPosition() - backLeftOffset) * CM_PER_TICK));
 
         MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
         distances[0] = distanceMatrix.get(0, 0);
@@ -114,9 +103,8 @@ public class    TeleOpMecanum {
     }
 
     public void setEncoderOffsets() {
-        frontLeftOffset = motor0.getCurrentPosition();
-        frontRightOffset = motor1.getCurrentPosition();
-        backLeftOffset = motor2.getCurrentPosition();
-        backRightOffset = motor3.getCurrentPosition();
+        LeftOffset = motorL.getCurrentPosition();
+        RightOffset = motorR.getCurrentPosition();
+
     }
 }
