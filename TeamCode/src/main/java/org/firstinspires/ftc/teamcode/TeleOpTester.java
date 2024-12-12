@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="TeleOp | Tank")
+@TeleOp(name="TeleOp Tank | New")
 public class TeleOpTester extends OpMode {
   
     double forward=0;

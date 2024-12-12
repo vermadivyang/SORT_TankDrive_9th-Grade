@@ -5,11 +5,10 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="TeleOp TESTER1 | Tank")
+@TeleOp(name="TeleOp Tank | Old")
 public class TeleOpTester1 extends OpMode {
   
     double forward=0;
-    double strafe=0;
     double rotate=0;
 
 
@@ -27,7 +26,6 @@ public class TeleOpTester1 extends OpMode {
     @Override
     public void loop() {
        
-      strafe = (gamepad1.left_trigger - gamepad1.right_trigger) * MAXSPEED;
       rotate = gamepad1.right_stick_x * MAXSPEED;
       forward = -gamepad1.left_stick_y * MAXSPEED;
 
@@ -43,12 +41,13 @@ public class TeleOpTester1 extends OpMode {
         }
 
         drive.setDrivePowers(
-                    new PoseVelocity2d(new Vector2d(
-                            forward,
-                            strafe),
-                            -rotate
-                    ));
-      
+           new PoseVelocity2d(
+                new Vector2d(forward, 0),
+                -rotate
+           )
+        );
+
+
         telemetry.addData("lift",gamepad2.right_stick_y);
         telemetry.update();
 
